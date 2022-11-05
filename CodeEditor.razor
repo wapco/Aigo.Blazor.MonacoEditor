@@ -1,0 +1,23 @@
+﻿@namespace Aigo.Blazor.MonacoEditor
+
+@using Microsoft.JSInterop
+@inherits CodeEditorBase
+
+<div class="monaco-editor" style="border: 1px solid gray; height: @(new MarkupString(Height.ToString()))px" @ref="element"></div>
+
+@code {
+    /// <summary>
+    /// 初始化编辑器
+    /// </summary>
+    /// <param name="firstRender"></param>
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        
+        if (firstRender)
+        {
+            var module = await moduleTask.Value;
+            await module.InvokeVoidAsync("init", element, thisReference, Language, ReadOnly, Value);
+        }
+    }
+}
